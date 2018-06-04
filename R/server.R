@@ -23,8 +23,30 @@ shinyServer(function(input, output) {
 
   })
   output$result <- renderText({
-    paste("You chose", input$department)
+    paste("You chose", input$department, input$localidad, localidad()$lat, localidad()$lon)
   })
+
+  output$results <- renderText({
+    if (is.na(localidad()$lat)){
+      paste("There are no results for your search (", input$localidad, ")")
+    }
+  })
+
+  localidad <- eventReactive(input$buscar , {
+    ggmap::geocode(input$localidad)
+  }, ignoreNULL = FALSE)
+
+  output$mymap <- renderLeaflet({
+
+    if(!is.na(localidad()$lat)){
+    leaflet(localidad(), options = leafletOptions(minZoom = 0, maxZoom = 9)) %>%
+      addTiles() %>% addMarkers()}
+    else{
+      leaflet() %>%
+        addTiles()
+    }
+  })
+
 
 
 })

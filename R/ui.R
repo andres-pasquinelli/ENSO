@@ -8,6 +8,9 @@
 #
 
 library(shiny)
+library(leaflet)
+library(ggmap)
+
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -23,11 +26,13 @@ shinyUI(fluidPage(
                    min = 1,
                    max = 50,
                    value = 30),
-       selectInput("department", "Choose a department:",
-                   list(`Santa Fe` = c("Rosario", "N/A"),
-                        `Cordoba` = c("N/A", "N/A"),
-                        `Buenos Aires` = c("N/A","N/A"))
-       )
+       textInput("localidad", "City", "Rosario, Santa Fe", placeholder ="Rosario, Santa Fe"),
+       actionButton("buscar", "Search"),
+       p(),
+       leafletOutput("mymap"),
+       textOutput("results")
+
+
     ),
 
     # Show a plot of the generated distribution

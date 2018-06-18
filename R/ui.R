@@ -16,16 +16,21 @@ library(ggmap)
 shinyUI(fluidPage(
 
   # Application title
-  titlePanel("Old Faithful Geyser Data"),
+  titlePanel("analysisArte: ENSO influence on local rainfall"),
 
   # Sidebar with a slider input for number of bins
   sidebarLayout(
-    sidebarPanel(
-       sliderInput("bins",
-                   "Number of bins:",
-                   min = 1,
-                   max = 50,
-                   value = 30),
+    sidebarPanel(width=3,
+       sliderInput("date_range",
+                   "Plot 1: Choose Year Range:",
+                   min = 1981, max = 2017,
+                   value = c(1987,2017)
+       ),
+       sliderInput("date_range1",
+                   "Plot 2: Choose Year Range:",
+                   min = 1981, max = 2017,
+                   value = c(198,2012)
+       ),
        textInput("localidad", "City", "Rosario, Santa Fe", placeholder ="Rosario, Santa Fe"),
        actionButton("buscar", "Search"),
        p(),
@@ -36,9 +41,13 @@ shinyUI(fluidPage(
     ),
 
     # Show a plot of the generated distribution
-    mainPanel(
+    mainPanel(width=9,
+      column(12,
        plotOutput("distPlot"),
-       textOutput("result")
+       plotOutput("distPlot1"),
+       textOutput("result"),
+       tableOutput("table")
+      )
     )
   )
 ))
